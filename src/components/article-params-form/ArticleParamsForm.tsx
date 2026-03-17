@@ -30,26 +30,23 @@ export const ArticleParamsForm = ({
 	currentArticleState,
 	setArticleState,
 }: TArticleParamsFormProps) => {
-	// 1. Изменили название стейта
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [formState, setFormState] =
 		useState<ArticleStateType>(currentArticleState);
 	const rootRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		// 2. Обновили проверку
 		if (!isMenuOpen) return;
 
 		const handleClickOutside = (event: MouseEvent) => {
 			if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
-				// 3. Обновили сеттер
 				setIsMenuOpen(false);
 			}
 		};
 
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [isMenuOpen]); // 4. Обновили массив зависимостей
+	}, [isMenuOpen]);
 
 	const handleFieldChange = (
 		key: keyof ArticleStateType,
@@ -70,12 +67,10 @@ export const ArticleParamsForm = ({
 
 	return (
 		<div ref={rootRef}>
-			{/* 5. Передали новые пропсы в кнопку */}
 			<ArrowButton
 				isOpen={isMenuOpen}
 				onClick={() => setIsMenuOpen(!isMenuOpen)}
 			/>
-			{/* 6. Обновили класс для открытия сайдбара */}
 			<aside
 				className={clsx(styles.container, isMenuOpen && styles.container_open)}>
 				<form className={styles.form} onSubmit={handleFormSubmit}>
