@@ -30,22 +30,26 @@ export const ArticleParamsForm = ({
 	currentArticleState,
 	setArticleState,
 }: TArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	// 1. Изменили название стейта
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [formState, setFormState] =
 		useState<ArticleStateType>(currentArticleState);
 	const rootRef = useRef<HTMLDivElement>(null);
 
-	// Закрытие по клику вне
 	useEffect(() => {
-		if (!isOpen) return;
+		// 2. Обновили проверку
+		if (!isMenuOpen) return;
+
 		const handleClickOutside = (event: MouseEvent) => {
 			if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
-				setIsOpen(false);
+				// 3. Обновили сеттер
+				setIsMenuOpen(false);
 			}
 		};
+
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [isOpen]);
+	}, [isMenuOpen]); // 4. Обновили массив зависимостей
 
 	const handleFieldChange = (
 		key: keyof ArticleStateType,
@@ -66,9 +70,14 @@ export const ArticleParamsForm = ({
 
 	return (
 		<div ref={rootRef}>
-			<ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+			{/* 5. Передали новые пропсы в кнопку */}
+			<ArrowButton
+				isOpen={isMenuOpen}
+				onClick={() => setIsMenuOpen(!isMenuOpen)}
+			/>
+			{/* 6. Обновили класс для открытия сайдбара */}
 			<aside
-				className={clsx(styles.container, isOpen && styles.container_open)}>
+				className={clsx(styles.container, isMenuOpen && styles.container_open)}>
 				<form className={styles.form} onSubmit={handleFormSubmit}>
 					<Text as='h2' size={31} weight={800} uppercase>
 						Настройки внешнего вида
